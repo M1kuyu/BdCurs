@@ -1,6 +1,5 @@
 package com.example.Views;
 
-
 import com.example.controllers.UserController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
