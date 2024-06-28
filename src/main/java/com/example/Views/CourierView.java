@@ -1,14 +1,15 @@
 package com.example.Views;
 
-
+import com.example.controllers.MainController;
 import com.example.controllers.PackageController;
+import com.example.controllers.UserController;
+import com.example.models.Package;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.Package;
 
 import java.util.List;
 
@@ -58,7 +59,12 @@ public class CourierView extends Application {
             }
         });
 
-        grid.getChildren().addAll(centerLabel, centerComboBox, loadButton);
+        // Кнопка назад
+        Button backButton = new Button("Назад");
+        GridPane.setConstraints(backButton, 1, 2);
+        backButton.setOnAction(e -> new MainController(new UserController()).handleBackButtonAction(primaryStage));
+
+        grid.getChildren().addAll(centerLabel, centerComboBox, loadButton, backButton);
 
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setScene(scene);

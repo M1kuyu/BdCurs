@@ -84,9 +84,14 @@ public class RegistrationView extends Application {
             }
         });
 
-        grid.getChildren().addAll(nameLabel, nameInput, phoneLabel, phoneInput, addressLabel, addressInput, passwordLabel, passwordInput, confirmPasswordLabel, confirmPasswordInput, registerButton);
+        // Кнопка для перехода к окну входа
+        Button loginButton = new Button("Войти");
+        GridPane.setConstraints(loginButton, 1, 6);
+        loginButton.setOnAction(e -> new LoginView(userController).start(primaryStage));
 
-        Scene scene = new Scene(grid, 300, 250);
+        grid.getChildren().addAll(nameLabel, nameInput, phoneLabel, phoneInput, addressLabel, addressInput, passwordLabel, passwordInput, confirmPasswordLabel, confirmPasswordInput, registerButton, loginButton);
+
+        Scene scene = new Scene(grid, 300, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

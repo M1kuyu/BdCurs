@@ -1,6 +1,7 @@
 package com.example.Views;
 
 import com.example.controllers.UserController;
+import com.example.controllers.PackageController;
 import com.example.models.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -53,16 +54,21 @@ public class LoginView extends Application {
                 if (user.getTypeId() == 1) {
                     new MainView(userController).start(primaryStage);
                 } else if (user.getTypeId() == 2) {
-                    new CourierView(userController).start(primaryStage);
+                    new CourierView(new PackageController()).start(primaryStage);
                 } else if (user.getTypeId() == 3) {
-                    new AdminView(userController).start(primaryStage);
+                    new AdminView(new PackageController()).start(primaryStage);
                 }
             } else {
                 showAlert(Alert.AlertType.ERROR, "Ошибка", "Неправильный логин или пароль.");
             }
         });
 
-        grid.getChildren().addAll(loginLabel, loginInput, passwordLabel, passwordInput, loginButton);
+        // Кнопка регистрации
+        Button registerButton = new Button("Регистрация");
+        GridPane.setConstraints(registerButton, 1, 3);
+        registerButton.setOnAction(e -> new RegistrationView(userController).start(primaryStage));
+
+        grid.getChildren().addAll(loginLabel, loginInput, passwordLabel, passwordInput, loginButton, registerButton);
 
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setScene(scene);

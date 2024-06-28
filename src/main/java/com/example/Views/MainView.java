@@ -29,13 +29,21 @@ public class MainView extends Application {
 
         // Кнопка профиля
         Button profileButton = new Button("Профиль");
-        profileButton.setOnAction(e -> mainController.handleProfileButtonAction());
+        profileButton.setOnAction(e -> {
+            mainController.handleProfileButtonAction(primaryStage);
+        });
 
         // Кнопка отправки посылки
         Button sendPackageButton = new Button("Отправить посылку");
-        sendPackageButton.setOnAction(e -> mainController.handleSendPackageButtonAction());
+        sendPackageButton.setOnAction(e -> {
+            mainController.handleSendPackageButtonAction(primaryStage);
+        });
 
-        vbox.getChildren().addAll(profileButton, sendPackageButton);
+        // Кнопка выхода
+        Button logoutButton = new Button("Выйти");
+        logoutButton.setOnAction(e -> new LoginView(userController).start(primaryStage));
+
+        vbox.getChildren().addAll(profileButton, sendPackageButton, logoutButton);
 
         Scene scene = new Scene(vbox, 300, 200);
         primaryStage.setScene(scene);

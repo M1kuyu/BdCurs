@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.Views.MainView;
 import com.example.Views.ProfileView;
 import com.example.Views.SendPackageView;
 import javafx.fxml.FXML;
@@ -15,21 +16,28 @@ public class MainController {
     }
 
     @FXML
-    private void handleProfileButtonAction() {
+    public void handleProfileButtonAction(Stage primaryStage) {
         try {
             new ProfileView(userController).start(new Stage());
+            primaryStage.close();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Ошибка", "Не удалось открыть окно профиля.");
         }
     }
 
     @FXML
-    private void handleSendPackageButtonAction() {
+    public void handleSendPackageButtonAction(Stage primaryStage) {
         try {
             new SendPackageView(userController).start(new Stage());
+            primaryStage.close();
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Ошибка", "Не удалось открыть окно отправки посылки.");
         }
+    }
+
+    @FXML
+    public void handleBackButtonAction(Stage primaryStage) {
+        new MainView(userController).start(primaryStage);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

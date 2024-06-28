@@ -1,7 +1,9 @@
 package com.example.Views;
 
+import com.example.controllers.MainController;
 import com.example.controllers.PackageController;
 import com.example.models.Package;
+import com.example.controllers.UserController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -51,7 +53,12 @@ public class AdminView extends Application {
             }
         });
 
-        grid.getChildren().addAll(packageIdLabel, packageIdInput, searchButton);
+        // Кнопка назад
+        Button backButton = new Button("Назад");
+        GridPane.setConstraints(backButton, 1, 2);
+        backButton.setOnAction(e -> new MainController(new UserController()).handleBackButtonAction(primaryStage));
+
+        grid.getChildren().addAll(packageIdLabel, packageIdInput, searchButton, backButton);
 
         Scene scene = new Scene(grid, 300, 150);
         primaryStage.setScene(scene);

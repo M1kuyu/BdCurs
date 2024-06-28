@@ -1,14 +1,20 @@
 package com.example.Views;
 
-import com.example.controllers.SendPackageController;
+import com.example.controllers.MainController;
+import com.example.controllers.PackageController;
 import com.example.controllers.UserController;
+import com.example.models.Client;
 import com.example.models.Package;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class SendPackageView extends Application {
 
@@ -29,24 +35,30 @@ public class SendPackageView extends Application {
         grid.setVgap(8);
         grid.setHgap(10);
 
+        // Получатели
+        Label receiverLabel = new Label("Получатель:");
+        GridPane.setConstraints(receiverLabel, 0, 0);
+        ComboBox<Client> receiverComboBox = new ComboBox<>();
+        List<Client> clients = userController.getAllClients();
+        ObservableList<Client> clientList = FXCollections.observableArrayList(clients);
+        receiverComboBox.setItems(clientList);
+        GridPane.setConstraints(receiverComboBox, 1, 0);
+
         // Центр отправки
         Label centerLabel = new Label("Центр отправки:");
-        GridPane.setConstraints(centerLabel, 0, 0);
+        GridPane.setConstraints(centerLabel, 0, 1);
         ComboBox<String> centerComboBox = new ComboBox<>();
-        GridPane.setConstraints(centerComboBox, 1, 0);
+        List<String> centers = userController.getAllDeliveryCenters();
+        ObservableList<String> centerList = FXCollections.observableArrayList(centers);
+        centerComboBox.setItems(centerList);
+        GridPane.setConstraints(centerComboBox, 1, 1);
 
         // Тип доставки
         Label typeLabel = new Label("Тип доставки:");
-        GridPane.setConstraints(typeLabel, 0, 1);
+        GridPane.setConstraints(typeLabel, 0, 2);
         ComboBox<String> typeComboBox = new ComboBox<>();
         typeComboBox.getItems().addAll("Обычная", "Срочная");
-        GridPane.setConstraints(typeComboBox, 1, 1);
-
-        // Имя получателя
-        Label receiverLabel = new Label("Имя получателя:");
-        GridPane.setConstraints(receiverLabel, 0, 2);
-        TextField receiverInput = new TextField();
-        GridPane.setConstraints(receiverInput, 1, 2);
+        GridPane.setConstraints(typeComboBox, 1, 2);
 
         // Вес посылки
         Label weightLabel = new Label("Вес посылки:");
@@ -54,24 +66,19 @@ public class SendPackageView extends Application {
         TextField weightInput = new TextField();
         GridPane.setConstraints(weightInput, 1, 3);
 
-        // Адрес получателя
-        Label addressLabel = new Label("Адрес получателя:");
-        GridPane.setConstraints(addressLabel, 0, 4);
-        TextField addressInput = new TextField();
-        GridPane.setConstraints(addressInput, 1, 4);
-
         // Кнопка отправки
         Button sendButton = new Button("Отправить посылку");
-        GridPane.setConstraints(sendButton, 1, 5);
+        GridPane.setConstraints(sendButton, 1, 4);
         sendButton.setOnAction(e -> {
-            String center = centerComboBox.getValue();
+            Client receiver = receiverComboBox.getValue();
             String type = typeComboBox.getValue();
-            String receiver = receiverInput.getText();
             double weight = Double.parseDouble(weightInput.getText());
-            String address = addressInput.getText();
+            String center = centerComboBox.getValue();
+            int senderCenterId = userController.getCurrentUser().getNearestDeliveryCenterId();
+            int receiverCenterId = receiver.getNearestDeliveryCenterId();
 
             // Создание объекта посылки
-            Package aPackage = new Package(0, weight, type, userController.getCurrentUser().getUserId(), receiver, center, address, 0);
+            Package aPackage = new Package(0, weight, type, userController.getCurrentUser().getUserId(), receiver.getClientId(), senderCenterId, receiverCenterId, 0);
 
             // Отправка посылки и получение объекта с ID
             Package sentPackage = sendPackageController.sendPackage(aPackage);
@@ -83,7 +90,12 @@ public class SendPackageView extends Application {
             }
         });
 
-        grid.getChildren().addAll(centerLabel, centerComboBox, typeLabel, typeComboBox, receiverLabel, receiverInput, weightLabel, weightInput, addressLabel, addressInput, sendButton);
+        // Кнопка назад
+        Button backButton = new Button("Назад");
+        GridPane.setConstraints(backButton, 1, 5);
+        backButton.setOnAction(e -> new MainController(userController).handleBackButtonAction(primaryStage));
+
+        grid.getChildren().addAll(receiverLabel, receiverComboBox, centerLabel, centerComboBox, typeLabel, typeComboBox, weightLabel, weightInput, sendButton, backButton);
 
         Scene scene = new Scene(grid, 300, 250);
         primaryStage.setScene(scene);

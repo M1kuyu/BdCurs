@@ -1,5 +1,6 @@
 package com.example.Views;
 
+import com.example.controllers.MainController;
 import com.example.controllers.ProfileController;
 import com.example.controllers.UserController;
 import javafx.application.Application;
@@ -24,6 +25,13 @@ public class ProfileView extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("profile_view.fxml"));
             loader.setController(new ProfileController(userController));
             GridPane grid = loader.load();
+
+            // Кнопка назад
+            Button backButton = new Button("Назад");
+            GridPane.setConstraints(backButton, 1, 7);
+            backButton.setOnAction(e -> new MainController(userController).handleBackButtonAction(primaryStage));
+
+            grid.getChildren().add(backButton);
 
             Scene scene = new Scene(grid, 300, 200);
             primaryStage.setScene(scene);
