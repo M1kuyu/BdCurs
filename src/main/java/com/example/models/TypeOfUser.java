@@ -1,20 +1,20 @@
 package com.example.models;
 
-public class Status {
-    private int statusId;
+public class TypeOfUser {
+    private int typeId;
     private String description;
 
-    public Status(int statusId, String description) {
-        this.statusId = statusId;
+    public TypeOfUser(int typeId, String description) {
+        this.typeId = typeId;
         this.description = description;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getDescription() {

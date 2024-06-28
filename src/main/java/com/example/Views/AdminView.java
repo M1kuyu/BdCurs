@@ -1,14 +1,13 @@
 package com.example.Views;
 
-
 import com.example.controllers.PackageController;
+import com.example.models.Package;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.Package;
 
 public class AdminView extends Application {
 

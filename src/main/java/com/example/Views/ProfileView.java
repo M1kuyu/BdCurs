@@ -1,13 +1,13 @@
 package com.example.Views;
 
 import com.example.controllers.UserController;
+import com.example.models.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.User;
 
 public class ProfileView extends Application {
 

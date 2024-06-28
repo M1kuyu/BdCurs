@@ -5,5 +5,5 @@ module com.example.curs_bd {
     requires java.sql;
 
     opens com.example.curs_bd to javafx.fxml;
-    exports com.example.curs_bd;
+
 }

@@ -1,13 +1,13 @@
-package com.example.Views;
+package com.example.views;
 
 import com.example.controllers.UserController;
+import com.example.models.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.User;
 
 public class RegistrationView extends Application {
 
@@ -73,7 +73,7 @@ public class RegistrationView extends Application {
             }
 
             User user = new User(0, password, name, 1); // Пример: 1 - это ID типа пользователя (например, клиент)
-            boolean success = userController.registerUser(user);
+            boolean success = userController.register(user);
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Успех", "Пользователь успешно зарегистрирован!");
@@ -101,3 +101,4 @@ public class RegistrationView extends Application {
         launch(args);
     }
 }
+

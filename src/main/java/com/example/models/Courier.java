@@ -1,5 +1,3 @@
-
-// src/main/java/com/example/models/Courier.java
 package com.example.models;
 
 public class Courier {
@@ -8,5 +6,42 @@ public class Courier {
     private String phone;
     private int deliveryCenterId;
 
-    // Getters and setters
+    public Courier(int courierId, String name, String phone, int deliveryCenterId) {
+        this.courierId = courierId;
+        this.name = name;
+        this.phone = phone;
+        this.deliveryCenterId = deliveryCenterId;
+    }
+
+    public int getCourierId() {
+        return courierId;
+    }
+
+    public void setCourierId(int courierId) {
+        this.courierId = courierId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getDeliveryCenterId() {
+        return deliveryCenterId;
+    }
+
+    public void setDeliveryCenterId(int deliveryCenterId) {
+        this.deliveryCenterId = deliveryCenterId;
+    }
 }

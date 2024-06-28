@@ -1,64 +1,68 @@
 package com.example.Views;
 
-
-import com.example.controllers.PackageController;
+import com.example.controllers.UserController;
+import com.example.models.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.Package;
 
-import java.util.List;
+public class LoginView extends Application {
 
-public class CourierView extends Application {
+    private UserController userController;
 
-    private PackageController packageController;
-
-    public CourierView(PackageController packageController) {
-        this.packageController = packageController;
+    public LoginView(UserController userController) {
+        this.userController = userController;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Курьер");
+        primaryStage.setTitle("Вход");
 
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
 
-        // Центр доставки
-        Label centerLabel = new Label("Центр доставки:");
-        GridPane.setConstraints(centerLabel, 0, 0);
-        ComboBox<String> centerComboBox = new ComboBox<>();
-        GridPane.setConstraints(centerComboBox, 1, 0);
+        // Логин
+        Label loginLabel = new Label("Логин:");
+        GridPane.setConstraints(loginLabel, 0, 0);
+        TextField loginInput = new TextField();
+        GridPane.setConstraints(loginInput, 1, 0);
 
-        // Кнопка загрузки посылок
-        Button loadButton = new Button("Загрузить посылки");
-        GridPane.setConstraints(loadButton, 1, 1);
-        loadButton.setOnAction(e -> {
-            String center = centerComboBox.getValue();
-            List<Package> packages = packageController.getPackagesByCenter(center);
+        // Пароль
+        Label passwordLabel = new Label("Пароль:");
+        GridPane.setConstraints(passwordLabel, 0, 1);
+        PasswordField passwordInput = new PasswordField();
+        GridPane.setConstraints(passwordInput, 1, 1);
 
-            if (packages != null) {
-                StringBuilder sb = new StringBuilder();
-                for (Package aPackage : packages) {
-                    sb.append("ID: ").append(aPackage.getPackageId())
-                            .append(", Отправитель: ").append(aPackage.getSender())
-                            .append(", Получатель: ").append(aPackage.getReceiver())
-                            .append(", Вес: ").append(aPackage.getWeight())
-                            .append(", Тип: ").append(aPackage.getType())
-                            .append("\n");
+        // Кнопка входа
+        Button loginButton = new Button("Вход");
+        GridPane.setConstraints(loginButton, 1, 2);
+        loginButton.setOnAction(e -> {
+            String login = loginInput.getText();
+            String password = passwordInput.getText();
+
+            User user = userController.login(login, password);
+
+            if (user != null) {
+                showAlert(Alert.AlertType.INFORMATION, "Успех", "Успешный вход в систему!");
+                // Переход на главное окно в зависимости от роли пользователя
+                if (user.getTypeId() == 1) {
+                    new MainView(userController).start(primaryStage);
+                } else if (user.getTypeId() == 2) {
+                    new CourierView(userController).start(primaryStage);
+                } else if (user.getTypeId() == 3) {
+                    new AdminView(userController).start(primaryStage);
                 }
-                showAlert(Alert.AlertType.INFORMATION, "Посылки", sb.toString());
             } else {
-                showAlert(Alert.AlertType.ERROR, "Ошибка", "Ошибка загрузки посылок.");
+                showAlert(Alert.AlertType.ERROR, "Ошибка", "Неправильный логин или пароль.");
             }
         });
 
-        grid.getChildren().addAll(centerLabel, centerComboBox, loadButton);
+        grid.getChildren().addAll(loginLabel, loginInput, passwordLabel, passwordInput, loginButton);
 
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setScene(scene);

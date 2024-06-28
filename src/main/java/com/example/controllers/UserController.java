@@ -1,7 +1,7 @@
 package com.example.controllers;
 
 import com.example.models.User;
-import com.example.util.DatabaseConnection;
+import com.example.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,72 +10,66 @@ import java.sql.SQLException;
 
 public class UserController {
 
-    // Метод для регистрации нового пользователя
-    public boolean register(User user) {
-        String query = "INSERT INTO users (username, password, role, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+    public User loginUser(String login, String password) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        User user = null;
 
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword()); // В реальном приложении пароли должны быть хэшированы
-            preparedStatement.setString(3, user.getRole());
-            preparedStatement.setString(4, user.getFirstName());
-            preparedStatement.setString(5, user.getLastName());
+        try {
+            connection = DBUtil.getConnection();
+            String query = "SELECT * FROM Users WHERE login = ? AND password = ?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, login);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
 
-            int result = preparedStatement.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Метод для авторизации пользователя
-    public User login(String username, String password) {
-        String query = "SELECT * FROM users WHERE username = ? AND password = ?"; // В реальном приложении пароли должны быть хэшированы
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getInt("id"));
-                user.setUsername(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-                user.setRole(resultSet.getString("role"));
-                user.setFirstName(resultSet.getString("first_name"));
-                user.setLastName(resultSet.getString("last_name"));
-                return user;
-            } else {
-                return null;
+            if (rs.next()) {
+                user = new User(rs.getInt("user_id"), rs.getString("login"), rs.getString("password"), rs.getInt("type_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+        } finally {
+            try {
+                DBUtil.closeResultSet(rs);
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        return user;
     }
 
-    // Метод для обновления данных пользователя
     public boolean updateUser(User user) {
-        String query = "UPDATE users SET username = ?, password = ?, role = ?, first_name = ?, last_name = ? WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        boolean updated = false;
 
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword()); // В реальном приложении пароли должны быть хэшированы
-            preparedStatement.setString(3, user.getRole());
-            preparedStatement.setString(4, user.getFirstName());
-            preparedStatement.setString(5, user.getLastName());
-            preparedStatement.setInt(6, user.getId());
+        try {
+            connection = DBUtil.getConnection();
+            String query = "UPDATE Users SET login = ?, password = ?, type_id = ? WHERE user_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, user.getLogin());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getTypeId());
+            ps.setInt(4, user.getUserId());
 
-            int result = preparedStatement.executeUpdate();
-            return result > 0;
+            updated = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+        } finally {
+            try {
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        return updated;
     }
+
+    // Другие методы контроллера
 }

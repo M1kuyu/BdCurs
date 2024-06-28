@@ -1,5 +1,3 @@
-
-// src/main/java/com/example/models/DeliveryCenter.java
 package com.example.models;
 
 public class DeliveryCenter {
@@ -7,5 +5,33 @@ public class DeliveryCenter {
     private String name;
     private String address;
 
-    // Getters and setters
+    public DeliveryCenter(int centerId, String name, String address) {
+        this.centerId = centerId;
+        this.name = name;
+        this.address = address;
+    }
+
+    public int getCenterId() {
+        return centerId;
+    }
+
+    public void setCenterId(int centerId) {
+        this.centerId = centerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
