@@ -1,6 +1,7 @@
-package com.example.Views;
+package com.example.controllers;
 
-import com.example.controllers.UserController;
+import com.example.Views.ProfileView;
+import com.example.Views.SendPackageView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;

@@ -1,5 +1,6 @@
 package com.example.views;
 
+import com.example.controllers.RegistrationController;
 import com.example.controllers.UserController;
 import com.example.models.User;
 import javafx.application.Application;
@@ -12,9 +13,11 @@ import javafx.stage.Stage;
 public class RegistrationView extends Application {
 
     private UserController userController;
+    private RegistrationController registrationController;
 
     public RegistrationView(UserController userController) {
         this.userController = userController;
+        this.registrationController = new RegistrationController();
     }
 
     @Override
@@ -67,13 +70,12 @@ public class RegistrationView extends Application {
             String confirmPassword = confirmPasswordInput.getText();
 
             if (!password.equals(confirmPassword)) {
-                // Обработка ошибки
                 showAlert(Alert.AlertType.ERROR, "Ошибка", "Пароли не совпадают!");
                 return;
             }
 
-            User user = new User(0, password, name, 1); // Пример: 1 - это ID типа пользователя (например, клиент)
-            boolean success = userController.register(user);
+            User user = new User(0, name, password, 1); // Пример: 1 - это ID типа пользователя (например, клиент)
+            boolean success = registrationController.registerUser(user);
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Успех", "Пользователь успешно зарегистрирован!");
@@ -101,4 +103,3 @@ public class RegistrationView extends Application {
         launch(args);
     }
 }
-

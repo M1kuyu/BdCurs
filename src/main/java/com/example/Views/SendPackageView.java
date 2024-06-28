@@ -1,22 +1,22 @@
-package com.example.Views;
+package com.example.views;
 
-import com.example.controllers.PackageController;
+import com.example.controllers.SendPackageController;
 import com.example.controllers.UserController;
+import com.example.models.Package;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import com.example.models.Package;
 
 public class SendPackageView extends Application {
 
-    private PackageController packageController;
+    private SendPackageController sendPackageController;
     private UserController userController;
 
-    public SendPackageView(PackageController packageController, UserController userController) {
-        this.packageController = packageController;
+    public SendPackageView(UserController userController) {
+        this.sendPackageController = new SendPackageController();
         this.userController = userController;
     }
 
@@ -70,11 +70,14 @@ public class SendPackageView extends Application {
             double weight = Double.parseDouble(weightInput.getText());
             String address = addressInput.getText();
 
-            Package aPackage = new Package(0, weight, type, userController.getCurrentUser().getUserId(), receiver, center, address);
-            boolean success = packageController.sendPackage(aPackage);
+            // Создание объекта посылки
+            Package aPackage = new Package(0, weight, type, userController.getCurrentUser().getUserId(), receiver, center, address, 0);
 
-            if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Успех", "Посылка успешно отправлена!");
+            // Отправка посылки и получение объекта с ID
+            Package sentPackage = sendPackageController.sendPackage(aPackage);
+
+            if (sentPackage != null) {
+                showAlert(Alert.AlertType.INFORMATION, "Успех", "Посылка успешно отправлена! Номер посылки: " + sentPackage.getPackageId());
             } else {
                 showAlert(Alert.AlertType.ERROR, "Ошибка", "Ошибка отправки посылки.");
             }

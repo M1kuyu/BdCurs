@@ -1,5 +1,6 @@
 package com.example.Views;
 
+import com.example.controllers.MainController;
 import com.example.controllers.UserController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -24,13 +25,15 @@ public class MainView extends Application {
         vbox.setPadding(new Insets(10, 10, 10, 10));
         vbox.setSpacing(10);
 
+        MainController mainController = new MainController(userController);
+
         // Кнопка профиля
         Button profileButton = new Button("Профиль");
-        profileButton.setOnAction(e -> new ProfileView(userController).start(primaryStage));
+        profileButton.setOnAction(e -> mainController.handleProfileButtonAction());
 
         // Кнопка отправки посылки
         Button sendPackageButton = new Button("Отправить посылку");
-        sendPackageButton.setOnAction(e -> new SendPackageView(userController).start(primaryStage));
+        sendPackageButton.setOnAction(e -> mainController.handleSendPackageButtonAction());
 
         vbox.getChildren().addAll(profileButton, sendPackageButton);
 

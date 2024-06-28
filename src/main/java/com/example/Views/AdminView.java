@@ -41,8 +41,8 @@ public class AdminView extends Application {
 
             if (aPackage != null) {
                 String message = "ID: " + aPackage.getPackageId()
-                        + ", Отправитель: " + aPackage.getSender()
-                        + ", Получатель: " + aPackage.getReceiver()
+                        + ", Отправитель: " + aPackage.getSenderId()
+                        + ", Получатель: " + aPackage.getReceiverId()
                         + ", Вес: " + aPackage.getWeight()
                         + ", Тип: " + aPackage.getType();
                 showAlert(Alert.AlertType.INFORMATION, "Посылка", message);

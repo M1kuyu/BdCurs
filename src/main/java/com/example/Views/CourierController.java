@@ -29,8 +29,8 @@ public class CourierController {
             StringBuilder sb = new StringBuilder();
             for (Package aPackage : packages) {
                 sb.append("ID: ").append(aPackage.getPackageId())
-                        .append(", Отправитель: ").append(aPackage.getSender())
-                        .append(", Получатель: ").append(aPackage.getReceiver())
+                        .append(", Отправитель: ").append(aPackage.getSenderId())
+                        .append(", Получатель: ").append(aPackage.getReceiverId())
                         .append(", Вес: ").append(aPackage.getWeight())
                         .append(", Тип: ").append(aPackage.getType())
                         .append("\n");

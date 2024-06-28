@@ -1,11 +1,14 @@
 package com.example.Views;
 
+import com.example.controllers.ProfileController;
 import com.example.controllers.UserController;
 import com.example.models.User;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -26,59 +29,36 @@ public class ProfileView extends Application {
         grid.setVgap(8);
         grid.setHgap(10);
 
+        ProfileController profileController = new ProfileController(userController);
+
         // Имя
         Label nameLabel = new Label("Имя:");
         GridPane.setConstraints(nameLabel, 0, 0);
-        TextField nameInput = new TextField();
+        TextField nameInput = new TextField(userController.getCurrentUser().getName());
         GridPane.setConstraints(nameInput, 1, 0);
 
         // Телефон
         Label phoneLabel = new Label("Телефон:");
         GridPane.setConstraints(phoneLabel, 0, 1);
-        TextField phoneInput = new TextField();
+        TextField phoneInput = new TextField(userController.getCurrentUser().getPhone());
         GridPane.setConstraints(phoneInput, 1, 1);
 
         // Адрес
         Label addressLabel = new Label("Адрес:");
         GridPane.setConstraints(addressLabel, 0, 2);
-        TextField addressInput = new TextField();
+        TextField addressInput = new TextField(userController.getCurrentUser().getAddress());
         GridPane.setConstraints(addressInput, 1, 2);
 
         // Кнопка сохранения изменений
         Button saveButton = new Button("Сохранить изменения");
         GridPane.setConstraints(saveButton, 1, 3);
-        saveButton.setOnAction(e -> {
-            String name = nameInput.getText();
-            String phone = phoneInput.getText();
-            String address = addressInput.getText();
-
-            User currentUser = userController.getCurrentUser();
-            currentUser.setName(name);
-            currentUser.setPhone(phone);
-            currentUser.setAddress(address);
-
-            boolean success = userController.updateUser(currentUser);
-
-            if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Успех", "Данные профиля успешно обновлены!");
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Ошибка", "Ошибка обновления данных профиля.");
-            }
-        });
+        saveButton.setOnAction(e -> profileController.handleSaveButtonAction(nameInput.getText(), phoneInput.getText(), addressInput.getText()));
 
         grid.getChildren().addAll(nameLabel, nameInput, phoneLabel, phoneInput, addressLabel, addressInput, saveButton);
 
         Scene scene = new Scene(grid, 300, 200);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public static void main(String[] args) {
