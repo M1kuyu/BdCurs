@@ -5,6 +5,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
+import com.example.models.Client;
+import com.example.models.Courier;
+
+import com.example.models.Admin;
+import com.example.utils.DBUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class MainController {
 
     private UserController userController;
@@ -12,6 +22,119 @@ public class MainController {
     public MainController(UserController userController) {
         this.userController = userController;
     }
+
+    public Client getClientByUserId(int userId) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Client client = null;
+
+        try {
+            connection = DBUtil.getConnection();
+            String query = "SELECT * FROM Clients WHERE user_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                client = new Client(
+                        rs.getInt("client_id"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getInt("nearest_delivery_center_id"),
+                        rs.getInt("user_id")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DBUtil.closeResultSet(rs);
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return client;
+    }
+
+    public Courier getCourierByUserId(int userId) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Courier courier = null;
+
+        try {
+            connection = DBUtil.getConnection();
+            String query = "SELECT * FROM Couriers WHERE user_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                courier = new Courier(
+                        rs.getInt("courier_id"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        rs.getInt("delivery_center_id"),
+                        rs.getInt("user_id")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DBUtil.closeResultSet(rs);
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return courier;
+    }
+
+    public Admin getAdminByUserId(int userId) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Admin admin = null;
+
+        try {
+            connection = DBUtil.getConnection();
+            String query = "SELECT * FROM Admins WHERE user_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                admin = new Admin(
+                        rs.getInt("admin_id"),
+                        rs.getString("name"),
+                        rs.getString("phone"),
+                        rs.getInt("delivery_center_id"),
+                        rs.getInt("user_id")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DBUtil.closeResultSet(rs);
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return admin;
+    }
+
 
     @FXML
     public void handleProfileButtonAction() {

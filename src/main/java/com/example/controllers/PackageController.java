@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class PackageController {
 
     public Package getPackageById(int packageId) {
@@ -51,6 +53,49 @@ public class PackageController {
 
         return aPackage;
     }
+
+    public List<Package> getPackagesByUserId(int userId) {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Package> packages = new ArrayList<>();
+
+        try {
+            connection = DBUtil.getConnection();
+            String query = "SELECT * FROM Packages WHERE sender_id = ? OR receiver_id = ?";
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, userId);
+            ps.setInt(2, userId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Package aPackage = new Package(
+                        rs.getInt("package_id"),
+                        rs.getDouble("weight"),
+                        rs.getString("type"),
+                        rs.getInt("sender_id"),
+                        rs.getInt("receiver_id"),
+                        rs.getInt("sender_center_id"),
+                        rs.getInt("receiver_center_id"),
+                        rs.getInt("status")
+                );
+                packages.add(aPackage);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DBUtil.closeResultSet(rs);
+                DBUtil.closePreparedStatement(ps);
+                DBUtil.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return packages;
+    }
+
 
     public boolean sendPackage(Package aPackage) {
         Connection connection = null;

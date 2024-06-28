@@ -1,6 +1,8 @@
 package com.example.controllers;
 
+import com.example.models.Admin;
 import com.example.models.Client;
+import com.example.models.Courier;
 import com.example.models.User;
 import com.example.utils.DBUtil;
 
@@ -14,6 +16,76 @@ import java.util.List;
 public class UserController {
 
     private User currentUser;
+    private List<Client> clients;
+    private List<Courier> couriers;
+    private List<Admin> admins;
+
+    public UserController() {
+
+        clients = new ArrayList<>();
+        couriers = new ArrayList<>();
+        admins = new ArrayList<>();
+
+    }
+
+
+    public Client getClientById(int id) {
+        for (Client client : clients) {
+            if (client.getUserId() == id) {
+                return client;
+            }
+        }
+        return null; // or throw an exception
+    }
+
+    public Courier getCurrentCourier() {
+        if (currentUser.getTypeId() == 2) {
+            for (Courier courier : couriers) {
+                if (courier.getUserId() == currentUser.getUserId()) {
+                    return courier;
+                }
+            }
+        }
+        return null; // or throw an exception
+    }
+
+    public Admin getCurrentAdmin() {
+        if (currentUser.getTypeId() == 3) {
+            for (Admin admin : admins) {
+                if (admin.getUserId() == currentUser.getUserId()) {
+                    return admin;
+                }
+            }
+        }
+        return null; // or throw an exception
+    }
+
+    public boolean updateUser(User user) {
+        if (user instanceof Client) {
+            Client clientToUpdate = getClientById(user.getUserId());
+            if (clientToUpdate != null) {
+                clientToUpdate.setName(((Client) user).getName());
+                clientToUpdate.setPhone(((Client) user).getPhone());
+                clientToUpdate.setAddress(((Client) user).getAddress());
+                return true;
+            }
+        } else if (user instanceof Courier) {
+            Courier courierToUpdate = getCurrentCourier();
+            if (courierToUpdate != null) {
+                courierToUpdate.setName(((Courier) user).getName());
+                courierToUpdate.setPhone(((Courier) user).getPhone());
+                return true;
+            }
+        } else if (user instanceof Admin) {
+            Admin adminToUpdate = getCurrentAdmin();
+            if (adminToUpdate != null) {
+                adminToUpdate.setName(((Admin) user).getName());
+                adminToUpdate.setPhone(((Admin) user).getPhone());
+                return true;
+            }
+        }
+        return false; // if user not found or update failed
+    }
 
     public User loginUser(String login, String password) {
         Connection connection = null;
