@@ -17,7 +17,7 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         UserController userController = new UserController();
-        User user = userController.login(username, password);
+        User user = userController.loginUser(username, password);
         if (user != null) {
             // Успешная авторизация
         } else {

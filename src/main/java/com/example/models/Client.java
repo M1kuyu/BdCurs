@@ -6,13 +6,15 @@ public class Client {
     private String phone;
     private String address;
     private int nearestDeliveryCenterId;
+    private int userId;
 
-    public Client(int clientId, String name, String phone, String address, int nearestDeliveryCenterId) {
+    public Client(int clientId, String name, String phone, String address, int nearestDeliveryCenterId, int userId) {
         this.clientId = clientId;
         this.name = name;
         this.phone = phone;
         this.address = address;
         this.nearestDeliveryCenterId = nearestDeliveryCenterId;
+        this.userId = userId;
     }
 
     public int getClientId() {
@@ -53,5 +55,13 @@ public class Client {
 
     public void setNearestDeliveryCenterId(int nearestDeliveryCenterId) {
         this.nearestDeliveryCenterId = nearestDeliveryCenterId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

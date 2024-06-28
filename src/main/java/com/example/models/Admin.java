@@ -1,26 +1,26 @@
 package com.example.models;
 
-public class Courier {
-    private int courierId;
+public class Admin {
+    private int adminId;
     private String name;
     private String phone;
     private int deliveryCenterId;
     private int userId;
 
-    public Courier(int courierId, String name, String phone, int deliveryCenterId, int userId) {
-        this.courierId = courierId;
+    public Admin(int adminId, String name, String phone, int deliveryCenterId, int userId) {
+        this.adminId = adminId;
         this.name = name;
         this.phone = phone;
         this.deliveryCenterId = deliveryCenterId;
         this.userId = userId;
     }
 
-    public int getCourierId() {
-        return courierId;
+    public int getAdminId() {
+        return adminId;
     }
 
-    public void setCourierId(int courierId) {
-        this.courierId = courierId;
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     public String getName() {
