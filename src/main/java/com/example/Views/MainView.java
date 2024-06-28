@@ -39,11 +39,17 @@ public class MainView extends Application {
             mainController.handleSendPackageButtonAction(primaryStage);
         });
 
+        // Кнопка просмотра посылок
+        Button viewPackagesButton = new Button("Мои посылки");
+        viewPackagesButton.setOnAction(e -> {
+            mainController.handleViewPackagesButtonAction(primaryStage);
+        });
+
         // Кнопка выхода
         Button logoutButton = new Button("Выйти");
         logoutButton.setOnAction(e -> new LoginView(userController).start(primaryStage));
 
-        vbox.getChildren().addAll(profileButton, sendPackageButton, logoutButton);
+        vbox.getChildren().addAll(profileButton, sendPackageButton, viewPackagesButton, logoutButton);
 
         Scene scene = new Scene(vbox, 300, 200);
         primaryStage.setScene(scene);

@@ -1,78 +1,64 @@
 package com.example.controllers;
 
-import com.example.models.Courier;
+import com.example.models.Package;
 import com.example.utils.DBUtil;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CourierController {
 
-    public Courier getCourierByUserId(int userId) {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Courier courier = null;
+    @FXML
+    private ComboBox<String> centerComboBox;
 
-        try {
-            connection = DBUtil.getConnection();
-            String query = "SELECT * FROM Couriers WHERE user_id = ?";
-            ps = connection.prepareStatement(query);
-            ps.setInt(1, userId);
-            rs = ps.executeQuery();
+    private UserController userController;
+    private PackageController packageController;
 
-            if (rs.next()) {
-                courier = new Courier(
-                        rs.getInt("courier_id"),
-                        rs.getString("name"),
-                        rs.getString("phone"),
-                        rs.getInt("delivery_center_id"),
-                        rs.getInt("user_id")
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DBUtil.closeResultSet(rs);
-                DBUtil.closePreparedStatement(ps);
-                DBUtil.closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return courier;
+    public CourierController(UserController userController) {
+        this.userController = userController;
+        this.packageController = new PackageController();
     }
 
-    public boolean updateCourier(Courier courier) {
-        Connection connection = null;
-        PreparedStatement ps = null;
-        boolean updated = false;
+    @FXML
+    public void handleLoadButtonAction() {
+        String center = centerComboBox.getValue();
+        List<Package> packages = packageController.getPackagesByCenter(center);
 
-        try {
-            connection = DBUtil.getConnection();
-            String query = "UPDATE Couriers SET name = ?, phone = ?, delivery_center_id = ? WHERE user_id = ?";
-            ps = connection.prepareStatement(query);
-            ps.setString(1, courier.getName());
-            ps.setString(2, courier.getPhone());
-            ps.setInt(3, courier.getDeliveryCenterId());
-            ps.setInt(4, courier.getUserId());
-
-            updated = ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DBUtil.closePreparedStatement(ps);
-                DBUtil.closeConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        if (packages != null) {
+            StringBuilder sb = new StringBuilder();
+            for (Package aPackage : packages) {
+                sb.append("ID: ").append(aPackage.getPackageId())
+                        .append(", Отправитель: ").append(aPackage.getSenderId())
+                        .append(", Получатель: ").append(aPackage.getReceiverId())
+                        .append(", Вес: ").append(aPackage.getWeight())
+                        .append(", Тип: ").append(aPackage.getType())
+                        .append("\n");
             }
+            showAlert(Alert.AlertType.INFORMATION, "Посылки", sb.toString());
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Ошибка", "Ошибка загрузки посылок.");
         }
+    }
 
-        return updated;
+    @FXML
+    public void handleBackButtonAction() {
+        Stage stage = (Stage) centerComboBox.getScene().getWindow();
+        new MainController(userController).handleBackButtonAction(stage);
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

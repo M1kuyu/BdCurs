@@ -1,7 +1,7 @@
 package com.example.Views;
 
 import com.example.controllers.MainController;
-import com.example.controllers.PackageController;
+import com.example.controllers.SendPackageController;
 import com.example.controllers.UserController;
 import com.example.models.Client;
 import com.example.models.Package;

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<GridPane fx:controller="view.AdminController" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+<GridPane fx:controller="com.example.controllers.AdminController" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
@@ -15,4 +13,5 @@
     <TextField fx:id="packageIdInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
     <Button text="Поиск" onAction="#handleSearchButtonAction" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Button text="Назад" onAction="#handleBackButtonAction" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 </GridPane>

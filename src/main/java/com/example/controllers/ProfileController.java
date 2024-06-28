@@ -28,7 +28,7 @@ public class ProfileController {
     private void initialize() {
         User currentUser = userController.getCurrentUser();
         if (currentUser.getTypeId() == 1) {
-            Client currentClient = userController.getCurrentClient();
+            Client currentClient = userController.getClientById(currentUser.getUserId());
             nameInput.setText(currentClient.getName());
             phoneInput.setText(currentClient.getPhone());
             addressInput.setText(currentClient.getAddress());
@@ -54,7 +54,7 @@ public class ProfileController {
         boolean success = false;
 
         if (currentUser.getTypeId() == 1) {
-            Client currentClient = userController.getCurrentClient();
+            Client currentClient = userController.getClientById(currentUser.getUserId());
             currentClient.setName(name);
             currentClient.setPhone(phone);
             currentClient.setAddress(address);
@@ -76,6 +76,12 @@ public class ProfileController {
         } else {
             showAlert(Alert.AlertType.ERROR, "Ошибка", "Ошибка обновления данных профиля.");
         }
+    }
+
+    @FXML
+    private void handleBackButtonAction() {
+        Stage stage = (Stage) nameInput.getScene().getWindow();
+        new MainController(userController).handleBackButtonAction(stage);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

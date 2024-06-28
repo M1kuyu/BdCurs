@@ -1,8 +1,6 @@
 package com.example.controllers;
 
-import com.example.Views.MainView;
-import com.example.Views.ProfileView;
-import com.example.Views.SendPackageView;
+import com.example.Views.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -16,23 +14,39 @@ public class MainController {
     }
 
     @FXML
-    public void handleProfileButtonAction(Stage primaryStage) {
+    public void handleProfileButtonAction() {
         try {
-            new ProfileView(userController).start(new Stage());
-            primaryStage.close();
+            Stage stage = new Stage();
+            new ProfileView(userController).start(stage);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Ошибка", "Не удалось открыть окно профиля.");
         }
     }
 
     @FXML
-    public void handleSendPackageButtonAction(Stage primaryStage) {
+    public void handleSendPackageButtonAction() {
         try {
-            new SendPackageView(userController).start(new Stage());
-            primaryStage.close();
+            Stage stage = new Stage();
+            new SendPackageView(userController).start(stage);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Ошибка", "Не удалось открыть окно отправки посылки.");
         }
+    }
+
+    @FXML
+    public void handleViewPackagesButtonAction() {
+        try {
+            Stage stage = new Stage();
+            new ViewPackagesView(userController).start(stage);
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Ошибка", "Не удалось открыть окно просмотра посылок.");
+        }
+    }
+
+    @FXML
+    public void handleLogoutButtonAction() {
+        Stage stage = (Stage) userController.getCurrentUser().getStage();
+        new LoginView(userController).start(stage);
     }
 
     @FXML

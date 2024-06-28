@@ -44,4 +44,5 @@ public class User {
     public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
+
 }

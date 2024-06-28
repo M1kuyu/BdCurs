@@ -9,6 +9,7 @@ public class Package {
     private int deliveryCenterId;
     private int senderCenterId;
     private int courierId;
+    private String status;
 
     public Package(int packageId, double weight, String type, int senderId, int receiverId, int deliveryCenterId, int senderCenterId, int courierId) {
         this.packageId = packageId;
@@ -25,63 +26,43 @@ public class Package {
         return packageId;
     }
 
-    public void setPackageId(int packageId) {
-        this.packageId = packageId;
-    }
-
     public double getWeight() {
         return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getSenderId() {
         return senderId;
-    }
-
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
     }
 
     public int getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(int receiverId) {
-        this.receiverId = receiverId;
-    }
-
     public int getDeliveryCenterId() {
         return deliveryCenterId;
-    }
-
-    public void setDeliveryCenterId(int deliveryCenterId) {
-        this.deliveryCenterId = deliveryCenterId;
     }
 
     public int getSenderCenterId() {
         return senderCenterId;
     }
 
-    public void setSenderCenterId(int senderCenterId) {
-        this.senderCenterId = senderCenterId;
-    }
-
     public int getCourierId() {
         return courierId;
     }
 
-    public void setCourierId(int courierId) {
-        this.courierId = courierId;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setPackageId(int packageId) {
+        this.packageId = packageId;
     }
 }
