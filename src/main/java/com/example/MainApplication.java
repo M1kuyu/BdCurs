@@ -1,4 +1,4 @@
-package com.example;
+/*package com.example;
 
 import com.example.controllers.UserController;
 import com.example.Views.LoginView;
@@ -18,6 +18,23 @@ public class MainApplication extends Application {
     private void showLoginView(Stage primaryStage) {
         LoginView loginView = new LoginView(userController);
         loginView.start(primaryStage);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}*/
+package com.example;
+
+import javafx.application.Application;
+import javafx.stage.Stage;
+import views.LoginView;
+
+public class MainApplication extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        LoginView loginView = new LoginView(primaryStage);
+        loginView.show();
     }
 
     public static void main(String[] args) {

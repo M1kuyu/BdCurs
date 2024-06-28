@@ -1,11 +1,14 @@
 package com.example.models;
 
-public class Admin {
+public class Admin extends User {
+    private int deliveryCenterId;
+
+/*public class Admin {
     private int adminId;
     private String name;
     private String phone;
     private int deliveryCenterId;
-    private int userId;
+    private int userId;*/
 
     public Admin(int adminId, String name, String phone, int deliveryCenterId, int userId) {
         this.adminId = adminId;

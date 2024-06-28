@@ -1,4 +1,4 @@
-package com.example.controllers;
+/*ackage com.example.controllers;
 
 import com.example.Views.*;
 import javafx.fxml.FXML;
@@ -183,5 +183,50 @@ public class MainController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+}
+*/
+package com.example.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import com.example.views.LoginView;
+import com.example.views.RegistrationView;
+import com.example.views.SendPackageView;
+import com.example.views.ProfileView;
+
+public class MainController extends BaseController {
+
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button registerButton;
+    @FXML
+    private Button sendPackageButton;
+    @FXML
+    private Button profileButton;
+
+    @FXML
+    public void initialize() {
+        loginButton.setOnAction(event -> showLoginView());
+        registerButton.setOnAction(event -> showRegistrationView());
+        sendPackageButton.setOnAction(event -> showSendPackageView());
+        profileButton.setOnAction(event -> showProfileView());
+    }
+
+    private void showLoginView() {
+        new LoginView(stage).show();
+    }
+
+    private void showRegistrationView() {
+        new RegistrationView(stage).show();
+    }
+
+    private void showSendPackageView() {
+        new SendPackageView(stage).show();
+    }
+
+    private void showProfileView() {
+        new ProfileView(stage).show();
     }
 }

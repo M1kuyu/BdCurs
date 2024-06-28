@@ -1,4 +1,4 @@
-package com.example.controllers;
+/*package com.example.controllers;
 
 import com.example.models.Client;
 import com.example.utils.DBUtil;
@@ -76,5 +76,95 @@ public class ClientController {
         }
 
         return updated;
+    }
+}
+*/
+package com.example.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import com.example.models.Client;
+import com.example.utils.DBUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ClientController extends BaseController {
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private TextField addressField;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button updateButton;
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    public void initialize() {
+        saveButton.setOnAction(event -> saveClient());
+        updateButton.setOnAction(event -> updateClient());
+        deleteButton.setOnAction(event -> deleteClient());
+    }
+
+    private void saveClient() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+        String address = addressField.getText();
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "INSERT INTO Clients (name, phone, address, nearest_delivery_center_id) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, phone);
+            stmt.setString(3, address);
+            // Replace with actual nearest_delivery_center_id
+            stmt.setInt(4, 1);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateClient() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+        String address = addressField.getText();
+
+        // Assume client_id is known
+        int clientId = 1;
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "UPDATE Clients SET name = ?, phone = ?, address = ? WHERE client_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, phone);
+            stmt.setString(3, address);
+            stmt.setInt(4, clientId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteClient() {
+        // Assume client_id is known
+        int clientId = 1;
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "DELETE FROM Clients WHERE client_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, clientId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

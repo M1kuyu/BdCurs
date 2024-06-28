@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
 
-<GridPane fx:controller="com.example.controllers.RegistrationController" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="10" vgap="10">
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.RegistrationController">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
-    <Label text="Имя:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <TextField fx:id="nameInput" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <TextField fx:id="usernameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+    <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <PasswordField fx:id="confirmPasswordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <TextField fx:id="nameField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+    <TextField fx:id="phoneField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <TextField fx:id="addressField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    <Button text="Register" fx:id="registerButton" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
 
-    <Label text="Телефон:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-    <TextField fx:id="phoneInput" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-
-    <Label text="Адрес:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField fx:id="addressInput" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-    <Label text="Пароль:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <PasswordField fx:id="passwordInput" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-
-    <Label text="Подтвердите пароль:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <PasswordField fx:id="confirmPasswordInput" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-
-    <Button text="Регистрация" onAction="#handleRegisterButtonAction" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-    <Button text="Войти" onAction="#handleBackToLoginButtonAction" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <Label text="Confirm Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <Label text="Name:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <Label text="Phone:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <Label text="Address:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
 </GridPane>

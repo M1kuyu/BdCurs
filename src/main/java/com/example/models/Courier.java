@@ -1,11 +1,17 @@
 package com.example.models;
 
-public class Courier {
+/*public class Courier {
     private int courierId;
     private String name;
     private String phone;
     private int deliveryCenterId;
-    private int userId;
+    private int userId;*/
+
+public class Courier extends User {
+    private int deliveryCenterId;
+
+
+
 
     public Courier(int courierId, String name, String phone, int deliveryCenterId, int userId) {
         this.courierId = courierId;

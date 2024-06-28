@@ -1,4 +1,8 @@
-package com.example.models;
+/*package com.example.models;
+
+public class Client extends User {
+    private String address;
+    private int nearestDeliveryCenterId;
 
 public class Client {
     private int clientId;
@@ -8,6 +12,7 @@ public class Client {
     private int nearestDeliveryCenterId;
     private int userId;
 
+
     public Client(int clientId, String name, String phone, String address, int nearestDeliveryCenterId, int userId) {
         this.clientId = clientId;
         this.name = name;
@@ -16,6 +21,7 @@ public class Client {
         this.nearestDeliveryCenterId = nearestDeliveryCenterId;
         this.userId = userId;
     }
+
 
     public int getClientId() {
         return clientId;
@@ -44,5 +50,35 @@ public class Client {
     @Override
     public String toString() {
         return name + " (" + phone + ")";
+    }
+}
+*/
+package com.example.models;
+
+public class Client extends User {
+    private String address;
+    private int nearestDeliveryCenterId;
+
+    // Getters and Setters
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getNearestDeliveryCenterId() {
+        return nearestDeliveryCenterId;
+    }
+
+    public void setNearestDeliveryCenterId(int nearestDeliveryCenterId) {
+        this.nearestDeliveryCenterId = nearestDeliveryCenterId;
+    }
+
+    @Override
+    public String toString() {
+        return getName(); // To display the client's name in the ComboBox
     }
 }

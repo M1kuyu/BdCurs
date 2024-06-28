@@ -1,4 +1,4 @@
-package com.example.controllers;
+/*package com.example.controllers;
 
 import com.example.models.Package;
 import com.example.utils.DBUtil;
@@ -61,4 +61,88 @@ public class CourierController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+}*/
+
+package com.example.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import com.example.models.Courier;
+import com.example.utils.DBUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class CourierController extends BaseController {
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button updateButton;
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    public void initialize() {
+        saveButton.setOnAction(event -> saveCourier());
+        updateButton.setOnAction(event -> updateCourier());
+        deleteButton.setOnAction(event -> deleteCourier());
+    }
+
+    private void saveCourier() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "INSERT INTO Couriers (name, phone, delivery_center_id) VALUES (?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, phone);
+            // Replace with actual delivery_center_id
+            stmt.setInt(3, 1);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateCourier() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+
+        // Assume courier_id is known
+        int courierId = 1;
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "UPDATE Couriers SET name = ?, phone = ? WHERE courier_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, phone);
+            stmt.setInt(3, courierId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteCourier() {
+        // Assume courier_id is known
+        int courierId = 1;
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "DELETE FROM Couriers WHERE courier_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, courierId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

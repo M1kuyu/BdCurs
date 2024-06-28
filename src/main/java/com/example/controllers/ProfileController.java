@@ -1,4 +1,4 @@
-package com.example.controllers;
+/*package com.example.controllers;
 
 import com.example.models.Admin;
 import com.example.models.Client;
@@ -90,5 +90,79 @@ public class ProfileController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+}
+*/
+package com.example.controllers;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import com.example.models.Client;
+import com.example.utils.DBUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ProfileController extends BaseController {
+
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private TextField addressField;
+    @FXML
+    private Button updateButton;
+
+    @FXML
+    public void initialize() {
+        // Load user data
+        loadUserData();
+
+        updateButton.setOnAction(event -> updateUserData());
+    }
+
+    private void loadUserData() {
+        // Assume user is logged in and we have userId
+        int userId = 1; // Replace with actual logged-in user ID
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "SELECT * FROM Clients WHERE user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, userId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                nameField.setText(rs.getString("name"));
+                phoneField.setText(rs.getString("phone"));
+                addressField.setText(rs.getString("address"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateUserData() {
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+        String address = addressField.getText();
+
+        // Assume user is logged in and we have userId
+        int userId = 1; // Replace with actual logged-in user ID
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String query = "UPDATE Clients SET name = ?, phone = ?, address = ? WHERE user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, name);
+            stmt.setString(2, phone);
+            stmt.setString(3, address);
+            stmt.setInt(4, userId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

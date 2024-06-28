@@ -1,11 +1,12 @@
 package com.example.models;
 
-public class User {
-    private int userId;
-    private String login;
+public abstract class User {
+    private int id;
+    private String username;
     private String password;
-    private int typeId;
-
+    private String name;
+    private String phone;
+/*
     public User(int userId, String login, String password, int typeId) {
         this.userId = userId;
         this.login = login;
@@ -44,5 +45,5 @@ public class User {
     public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
-
+*/
 }

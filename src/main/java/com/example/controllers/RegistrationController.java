@@ -1,4 +1,4 @@
-package com.example.controllers;
+/*package com.example.controllers;
 
 import com.example.Views.LoginView;
 import com.example.models.User;
@@ -106,4 +106,81 @@ public class RegistrationController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+}*/
+
+package com.example.controllers;
+
+import com.example.controllers.BaseController;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import com.example.utils.DBUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class RegistrationController extends BaseController {
+
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private PasswordField confirmPasswordField;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField phoneField;
+    @FXML
+    private TextField addressField;
+    @FXML
+    private Button registerButton;
+
+    @FXML
+    public void initialize() {
+        registerButton.setOnAction(event -> register());
+    }
+
+    private void register() {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        String name = nameField.getText();
+        String phone = phoneField.getText();
+        String address = addressField.getText();
+
+        if (!password.equals(confirmPassword)) {
+            // Show error: Passwords do not match
+            return;
+        }
+
+        try (Connection conn = DBUtil.getConnection()) {
+            String insertUserQuery = "INSERT INTO Users (login, password) VALUES (?, ?)";
+            PreparedStatement userStmt = conn.prepareStatement(insertUserQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            userStmt.setString(1, username);
+            userStmt.setString(2, password); // Hash password before storing
+            userStmt.executeUpdate();
+
+            ResultSet generatedKeys = userStmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int userId = generatedKeys.getInt(1);
+
+                String insertClientQuery = "INSERT INTO Clients (name, phone, address, user_id) VALUES (?, ?, ?, ?)";
+                PreparedStatement clientStmt = conn.prepareStatement(insertClientQuery);
+                clientStmt.setString(1, name);
+                clientStmt.setString(2, phone);
+                clientStmt.setString(3, address);
+                clientStmt.setInt(4, userId);
+                clientStmt.executeUpdate();
+
+                // Registration successful, redirect to login
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

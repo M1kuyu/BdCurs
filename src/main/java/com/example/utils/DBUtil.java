@@ -1,4 +1,4 @@
-package com.example.utils;
+/*package com.example.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -39,4 +39,21 @@ public class DBUtil {
             ps.close();
         }
     }
+}*/
+
+package com.example.utils;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBUtil {
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/courier_service";
+    private static final String USER = "root";
+    private static final String PASS = "password";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, USER, PASS);
+    }
 }
+
