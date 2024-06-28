@@ -1,4 +1,4 @@
-package com.example.views;
+package com.example.Views;
 
 import com.example.controllers.SendPackageController;
 import com.example.controllers.UserController;

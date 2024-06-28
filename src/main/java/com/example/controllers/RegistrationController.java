@@ -5,6 +5,7 @@ import com.example.utils.DBUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RegistrationController {
@@ -17,12 +18,21 @@ public class RegistrationController {
         try {
             connection = DBUtil.getConnection();
             String query = "INSERT INTO Users (login, password, type_id) VALUES (?, ?, ?)";
-            ps = connection.prepareStatement(query);
+            ps = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.setInt(3, user.getTypeId());
 
-            registered = ps.executeUpdate() > 0;
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        user.setUserId(rs.getInt(1));
+                    }
+                }
+                registered = true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -37,4 +47,3 @@ public class RegistrationController {
         return registered;
     }
 }
-
