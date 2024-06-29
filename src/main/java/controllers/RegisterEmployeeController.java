@@ -26,9 +26,6 @@ public class RegisterEmployeeController {
     private TextField phoneField;
 
     @FXML
-    private TextField addressField;
-
-    @FXML
     private TextField loginField;
 
     @FXML
@@ -52,7 +49,6 @@ public class RegisterEmployeeController {
     private void registerEmployee() {
         String name = nameField.getText();
         String phone = phoneField.getText();
-        String address = addressField.getText();
         String login = loginField.getText();
         String password = HashUtil.hashPassword(passwordField.getText());
         boolean isAdmin = isAdminCheckBox.isSelected();
@@ -73,15 +69,14 @@ public class RegisterEmployeeController {
                     int userId = generatedKeys.getInt(1);
 
                     if (isAdmin) {
-                        query = "INSERT INTO Admins (name, phone, address, user_id) VALUES (?, ?, ?, ?)";
+                        query = "INSERT INTO Admins (name, phone, user_id) VALUES (?, ?, ?)";
                     } else {
-                        query = "INSERT INTO Couriers (name, phone, address, user_id) VALUES (?, ?, ?, ?)";
+                        query = "INSERT INTO Couriers (name, phone, user_id) VALUES (?, ?, ?)";
                     }
                     statement = connection.prepareStatement(query);
                     statement.setString(1, name);
                     statement.setString(2, phone);
-                    statement.setString(3, address);
-                    statement.setInt(4, userId);
+                    statement.setInt(3, userId);
 
                     statement.executeUpdate();
                     showAlert("Success", "Employee registered successfully!");

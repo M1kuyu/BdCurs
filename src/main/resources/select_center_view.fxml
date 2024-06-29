@@ -7,7 +7,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.SelectCenterController">
-    <TextField fx:id="clientIdField" promptText="Client ID"/>
+    <TextField fx:id="clientIdField" promptText="Enter Client ID"/>
+    <Button fx:id="loadClientButton" text="Load Client"/>
     <TextField fx:id="clientAddressField" promptText="Client Address" editable="false"/>
     <ComboBox<String> fx:id="centerComboBox" promptText="Select Delivery Center"/>
     <TextField fx:id="centerAddressField" promptText="Center Address" editable="false"/>

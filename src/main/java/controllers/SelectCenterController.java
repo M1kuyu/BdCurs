@@ -32,6 +32,9 @@ public class SelectCenterController {
     private TextField centerAddressField;
 
     @FXML
+    private Button loadClientButton;
+
+    @FXML
     private Button saveButton;
 
     @FXML
@@ -39,7 +42,7 @@ public class SelectCenterController {
 
     @FXML
     public void initialize() {
-        clientIdField.setOnAction(event -> loadClientInfo());
+        loadClientButton.setOnAction(event -> loadClientInfo());
         centerComboBox.setOnAction(event -> loadCenterAddress());
         saveButton.setOnAction(event -> saveCenter());
         backButton.setOnAction(event -> goBack());

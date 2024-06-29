@@ -87,6 +87,7 @@ public class SendPackageController {
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
                 System.out.println("Invalid sender ID");
+                System.out.println(senderId);
                 return;
             }
 
