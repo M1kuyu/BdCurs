@@ -17,25 +17,35 @@ public class CourierController {
 
     @FXML
     private ListView<String> packageListView;
+    private int courierId;
 
     @FXML
     private Button logoutButton;
 
-    @FXML
-    public void initialize() {
+    public void packagesOfCuries(){
         loadPackages();
+    }
+    @FXML
+    public void initialize(int courierId) {
+
+
         logoutButton.setOnAction(event -> logout());
     }
 
+    public void setCourierId(int courierId){this.courierId = courierId;
+        System.out.println(courierId + " sasd");}
+
     private void loadPackages() {
         try (Connection connection = DBUtil.getConnection()) {
-            // Assuming courier_id is available somehow (e.g., passed during login)
-            int courierId = 1;  // Replace with actual courier ID
-            String query = "SELECT * FROM Packages WHERE courier_id = ?";
+
+            String query = "SELECT package_id, weight, type FROM Packages WHERE courier_id = ?";
+
             PreparedStatement statement = connection.prepareStatement(query);
+            System.out.println(courierId);
             statement.setInt(1, courierId);
 
             ResultSet resultSet = statement.executeQuery();
+            packageListView.getItems().clear(); // Clear the list before adding new items
             while (resultSet.next()) {
                 String packageInfo = "ID: " + resultSet.getInt("package_id") +
                         " Weight: " + resultSet.getFloat("weight") +
@@ -46,6 +56,8 @@ public class CourierController {
             e.printStackTrace();
         }
     }
+
+
 
     private void logout() {
         try {

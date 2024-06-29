@@ -1,14 +1,16 @@
 package controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import models.UserType;
 import utils.DBUtil;
 import utils.HashUtil;
 
@@ -35,6 +37,9 @@ public class RegisterEmployeeController {
     private CheckBox isAdminCheckBox;
 
     @FXML
+    private ComboBox<String> deliveryCenterComboBox;
+
+    @FXML
     private Button registerButton;
 
     @FXML
@@ -44,6 +49,23 @@ public class RegisterEmployeeController {
     public void initialize() {
         registerButton.setOnAction(event -> registerEmployee());
         backButton.setOnAction(event -> goBack());
+        loadDeliveryCenters();
+    }
+
+    private void loadDeliveryCenters() {
+        try (Connection connection = DBUtil.getConnection()) {
+            String query = "SELECT name FROM DeliveryCenters";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            ResultSet resultSet = statement.executeQuery();
+            ObservableList<String> centers = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                centers.add(resultSet.getString("name"));
+            }
+            deliveryCenterComboBox.setItems(centers);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void registerEmployee() {
@@ -52,8 +74,14 @@ public class RegisterEmployeeController {
         String login = loginField.getText();
         String password = HashUtil.hashPassword(passwordField.getText());
         boolean isAdmin = isAdminCheckBox.isSelected();
+        String selectedCenter = deliveryCenterComboBox.getSelectionModel().getSelectedItem();
 
-        int userType = isAdmin ? UserType.ADMIN.ordinal() + 1 : UserType.COURIER.ordinal() + 1;
+        if (selectedCenter == null) {
+            showAlert("Error", "Please select a delivery center");
+            return;
+        }
+
+        int userType = isAdmin ? 3 : 2; // Assuming 3 is for Admin and 2 is for Courier
 
         try (Connection connection = DBUtil.getConnection()) {
             String query = "INSERT INTO Users (login, password, type_id) VALUES (?, ?, ?)";
@@ -68,18 +96,28 @@ public class RegisterEmployeeController {
                 if (generatedKeys.next()) {
                     int userId = generatedKeys.getInt(1);
 
-                    if (isAdmin) {
-                        query = "INSERT INTO Admins (name, phone, user_id) VALUES (?, ?, ?)";
-                    } else {
-                        query = "INSERT INTO Couriers (name, phone, user_id) VALUES (?, ?, ?)";
-                    }
+                    query = "SELECT center_id FROM DeliveryCenters WHERE name = ?";
                     statement = connection.prepareStatement(query);
-                    statement.setString(1, name);
-                    statement.setString(2, phone);
-                    statement.setInt(3, userId);
+                    statement.setString(1, selectedCenter);
 
-                    statement.executeUpdate();
-                    showAlert("Success", "Employee registered successfully!");
+                    ResultSet resultSet = statement.executeQuery();
+                    if (resultSet.next()) {
+                        int centerId = resultSet.getInt("center_id");
+
+                        if (isAdmin) {
+                            query = "INSERT INTO Admins (name, phone, delivery_center_id, user_id) VALUES (?, ?, ?, ?)";
+                        } else {
+                            query = "INSERT INTO Couriers (name, phone, delivery_center_id, user_id) VALUES (?, ?, ?, ?)";
+                        }
+                        statement = connection.prepareStatement(query);
+                        statement.setString(1, name);
+                        statement.setString(2, phone);
+                        statement.setInt(3, centerId);
+                        statement.setInt(4, userId);
+
+                        statement.executeUpdate();
+                        showAlert("Success", "Employee registered successfully!");
+                    }
                 }
             }
         } catch (SQLException e) {

@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.DBUtil;
 
@@ -15,9 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TrackPackageController {
-
-    @FXML
-    private TextField trackingIdField;
 
     @FXML
     private Button trackButton;
@@ -32,18 +28,27 @@ public class TrackPackageController {
 
     public void setClientId(int clientId) {
         this.clientId = clientId;
-        loadClientPackages();
+        System.out.println("Client ID set to: " + clientId); // Для отладки
     }
 
     @FXML
     public void initialize() {
-        trackButton.setOnAction(event -> trackPackage());
+        trackButton.setOnAction(event -> loadClientPackages());
         backButton.setOnAction(event -> goBack());
     }
 
     private void loadClientPackages() {
+        if (clientId <= 0) {
+            System.out.println("Invalid Client ID");
+            return;
+        }
+
         try (Connection connection = DBUtil.getConnection()) {
-            String query = "SELECT package_id, weight, type, delivery_center_id FROM Packages WHERE sender_id = ? OR receiver_id = ?";
+            String query = "SELECT P.package_id, S.description, PS.date, DC.name FROM Packages P " +
+                    "JOIN Packages_Statuses PS ON P.package_id = PS.package_id " +
+                    "JOIN Statuses S ON PS.status_id = S.status_id " +
+                    "JOIN DeliveryCenters DC ON PS.center_id = DC.center_id " +
+                    "WHERE P.sender_id = ? OR P.receiver_id = ? ORDER BY PS.date ASC";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, clientId);
             statement.setInt(2, clientId);
@@ -51,31 +56,11 @@ public class TrackPackageController {
             ResultSet resultSet = statement.executeQuery();
             statusListView.getItems().clear();
             while (resultSet.next()) {
-                String packageInfo = "Package ID: " + resultSet.getInt("package_id") + ", Weight: " + resultSet.getFloat("weight") +
-                        ", Type: " + resultSet.getString("type") + ", Delivery Center ID: " + resultSet.getInt("delivery_center_id");
+                String packageInfo = "Package ID: " + resultSet.getInt("package_id") +
+                        ", Status: " + resultSet.getString("description") +
+                        ", Date: " + resultSet.getDate("date") +
+                        ", Location: " + resultSet.getString("name");
                 statusListView.getItems().add(packageInfo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void trackPackage() {
-        int packageId = Integer.parseInt(trackingIdField.getText());
-
-        try (Connection connection = DBUtil.getConnection()) {
-            String query = "SELECT description, date, name FROM Packages_Statuses " +
-                    "JOIN Statuses ON Packages_Statuses.status_id = Statuses.status_id " +
-                    "JOIN DeliveryCenters ON Packages_Statuses.center_id = DeliveryCenters.center_id " +
-                    "WHERE package_id = ? ORDER BY date ASC";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, packageId);
-
-            ResultSet resultSet = statement.executeQuery();
-            statusListView.getItems().clear();
-            while (resultSet.next()) {
-                String status = resultSet.getString("description") + " at " + resultSet.getString("name") + " on " + resultSet.getDate("date");
-                statusListView.getItems().add(status);
             }
         } catch (SQLException e) {
             e.printStackTrace();

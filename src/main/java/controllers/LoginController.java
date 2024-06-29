@@ -110,6 +110,11 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Courier");
+
+            CourierController courierController = loader.getController();
+            courierController.setCourierId(userId);
+            courierController.packagesOfCuries();
+
             stage.show();
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();

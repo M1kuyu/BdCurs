@@ -3,15 +3,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
 
-<VBox alignment="CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.SelectCenterController">
-    <TextField fx:id="clientIdField" promptText="Enter Client ID"/>
-    <Button fx:id="loadClientButton" text="Load Client"/>
-    <TextField fx:id="clientAddressField" promptText="Client Address" editable="false"/>
-    <ComboBox<String> fx:id="centerComboBox" promptText="Select Delivery Center"/>
-    <TextField fx:id="centerAddressField" promptText="Center Address" editable="false"/>
-    <Button fx:id="saveButton" text="Save"/>
-    <Button fx:id="backButton" text="Back"/>
-</VBox>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SelectCenterController">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <Label text="Client ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+    <TextField fx:id="clientIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+    <Label text="Client Address:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+    <TextField fx:id="clientAddressField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <Label text="Select Center:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+    <ComboBox fx:id="centerComboBox" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+    <Label text="Center Address:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+    <TextField fx:id="centerAddressField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+    <Button text="Load Client Info" fx:id="loadClientButton" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+    <Button text="Save" fx:id="saveButton" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <Button text="Back" fx:id="backButton" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+</GridPane>
