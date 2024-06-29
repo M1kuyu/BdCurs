@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="266.0" prefWidth="225.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controllers.AdminController">
+    <TextField fx:id="packageIdField" promptText="Package ID" />
+    <TextField fx:id="packageInfoField" editable="false" promptText="Package Info" />
+    <Button fx:id="searchButton" text="Search" />
+    <Button fx:id="logoutButton" text="Logout" />
+</VBox>
