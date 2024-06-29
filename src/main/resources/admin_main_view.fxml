@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="276.0" prefWidth="278.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controllers.AdminMainController">
+    <Button fx:id="managePackagesButton" text="Manage Packages" />
+    <Button fx:id="registerEmployeeButton" text="Register Employee" />
+    <Button fx:id="selectCenterButton" text="Select Delivery Center" />
+    <Button fx:id="logoutButton" text="Logout" />
+</VBox>

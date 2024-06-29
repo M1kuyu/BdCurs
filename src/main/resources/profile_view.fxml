@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="325.0" prefWidth="252.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controllers.ProfileController">
+    <TextField fx:id="nameField" promptText="Name" />
+    <TextField fx:id="phoneField" promptText="Phone" />
+    <TextField fx:id="addressField" promptText="Address" />
+    <Button fx:id="saveButton" text="Save" />
+    <Button fx:id="backButton" text="Back" />
+</VBox>

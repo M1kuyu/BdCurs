@@ -1,9 +1,9 @@
-module com.example.curs_bd {
+module com.example.demo {
     requires javafx.controls;
     requires javafx.fxml;
-    requires eu.hansolo.fx.heatmap;
     requires java.sql;
 
-    opens com.example.curs_bd to javafx.fxml;
+    opens main to javafx.graphics;
+    opens controllers to javafx.fxml;
 
 }

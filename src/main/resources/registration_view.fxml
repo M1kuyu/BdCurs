@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="322.0" prefWidth="242.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controllers.RegistrationController">
+    <TextField fx:id="nameField" promptText="Name" />
+    <TextField fx:id="phoneField" promptText="Phone" />
+    <TextField fx:id="addressField" promptText="Address" />
+    <PasswordField fx:id="passwordField" promptText="Password" />
+    <PasswordField fx:id="confirmPasswordField" promptText="Confirm Password" />
+    <Button fx:id="registerButton" text="Register" />
+    <Button fx:id="loginButton" text="Login" />
+</VBox>
