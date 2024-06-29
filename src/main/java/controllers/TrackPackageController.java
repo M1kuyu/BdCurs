@@ -28,10 +28,36 @@ public class TrackPackageController {
     @FXML
     private Button backButton;
 
+    private int clientId;
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
+        loadClientPackages();
+    }
+
     @FXML
     public void initialize() {
         trackButton.setOnAction(event -> trackPackage());
         backButton.setOnAction(event -> goBack());
+    }
+
+    private void loadClientPackages() {
+        try (Connection connection = DBUtil.getConnection()) {
+            String query = "SELECT package_id, weight, type, delivery_center_id FROM Packages WHERE sender_id = ? OR receiver_id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, clientId);
+            statement.setInt(2, clientId);
+
+            ResultSet resultSet = statement.executeQuery();
+            statusListView.getItems().clear();
+            while (resultSet.next()) {
+                String packageInfo = "Package ID: " + resultSet.getInt("package_id") + ", Weight: " + resultSet.getFloat("weight") +
+                        ", Type: " + resultSet.getString("type") + ", Delivery Center ID: " + resultSet.getInt("delivery_center_id");
+                statusListView.getItems().add(packageInfo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void trackPackage() {

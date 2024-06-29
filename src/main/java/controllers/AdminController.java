@@ -23,12 +23,12 @@ public class AdminController {
     private Button searchButton;
 
     @FXML
-    private Button logoutButton;
+    private Button backButton;
 
     @FXML
     public void initialize() {
         searchButton.setOnAction(event -> searchPackage());
-        logoutButton.setOnAction(event -> logout());
+        backButton.setOnAction(event -> goBack());
     }
 
     private void searchPackage() {
@@ -64,15 +64,14 @@ public class AdminController {
         alert.showAndWait();
     }
 
-    private void logout() {
-        // Close current window and return to login window
+    private void goBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin_main_view.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Login");
+            stage.setTitle("Admin Main");
             stage.show();
-            Stage currentStage = (Stage) logoutButton.getScene().getWindow();
+            Stage currentStage = (Stage) backButton.getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
             e.printStackTrace();

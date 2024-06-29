@@ -6,82 +6,64 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ClientController {
+public class AdminMainController {
 
     @FXML
-    private Button profileButton;
+    private Button managePackagesButton;
 
     @FXML
-    private Button sendPackageButton;
+    private Button registerEmployeeButton;
 
     @FXML
-    private Button trackPackageButton;
+    private Button selectCenterButton;
 
     @FXML
     private Button logoutButton;
 
-    private int userId;
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     @FXML
     public void initialize() {
-        profileButton.setOnAction(event -> openProfile());
-        sendPackageButton.setOnAction(event -> openSendPackage());
-        trackPackageButton.setOnAction(event -> openTrackPackage());
+        managePackagesButton.setOnAction(event -> openManagePackages());
+        registerEmployeeButton.setOnAction(event -> openRegisterEmployee());
+        selectCenterButton.setOnAction(event -> openSelectCenter());
         logoutButton.setOnAction(event -> logout());
     }
 
-    private void openProfile() {
+    private void openManagePackages() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/profile_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin_view.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Profile");
-
-            ProfileController controller = loader.getController();
-            controller.setUserId(userId);
-
+            stage.setTitle("Manage Packages");
             stage.show();
-            Stage currentStage = (Stage) profileButton.getScene().getWindow();
+            Stage currentStage = (Stage) managePackagesButton.getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void openSendPackage() {
+    private void openRegisterEmployee() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/send_package_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/register_employee_view.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Send Package");
-
-            SendPackageController controller = loader.getController();
-            controller.initializeSenderId(userId);
-
+            stage.setTitle("Register Employee");
             stage.show();
-            Stage currentStage = (Stage) sendPackageButton.getScene().getWindow();
+            Stage currentStage = (Stage) registerEmployeeButton.getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void openTrackPackage() {
+    private void openSelectCenter() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/track_package_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/select_center_view.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Track Package");
-
-            TrackPackageController controller = loader.getController();
-            controller.setClientId(userId);
-
+            stage.setTitle("Select Delivery Center");
             stage.show();
-            Stage currentStage = (Stage) trackPackageButton.getScene().getWindow();
+            Stage currentStage = (Stage) selectCenterButton.getScene().getWindow();
             currentStage.close();
         } catch (Exception e) {
             e.printStackTrace();

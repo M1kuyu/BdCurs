@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="266.0" prefWidth="225.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AdminController">
+<VBox alignment="CENTER" prefHeight="250.0" prefWidth="258.0" spacing="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="controllers.AdminController">
     <TextField fx:id="packageIdField" promptText="Package ID" />
     <Button fx:id="searchButton" text="Search" />
-    <Button fx:id="logoutButton" text="Logout" />
+    <Button fx:id="backButton" text="Back" />
 </VBox>

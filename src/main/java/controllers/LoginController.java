@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static models.UserType.ADMIN;
+
 public class LoginController {
 
     @FXML
@@ -60,7 +62,7 @@ public class LoginController {
                         openCourierView(userId);
                         break;
                     case ADMIN:
-                        openAdminView(userId);
+                        openAdminMainView(userId);
                         break;
                 }
             } else {
@@ -92,10 +94,8 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Client");
-
-            ClientController clientController = loader.getController();
-            clientController.setUserId(userId);
-
+            ClientController controller = loader.getController();
+            controller.setUserId(userId);
             stage.show();
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
@@ -118,12 +118,12 @@ public class LoginController {
         }
     }
 
-    private void openAdminView(int userId) {
+    private void openAdminMainView(int userId) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin_view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin_main_view.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Admin");
+            stage.setTitle("Admin Main");
             stage.show();
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
