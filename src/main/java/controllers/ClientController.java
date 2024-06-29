@@ -20,6 +20,12 @@ public class ClientController {
     @FXML
     private Button logoutButton;
 
+    private int userId;
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @FXML
     public void initialize() {
         profileButton.setOnAction(event -> openProfile());
@@ -34,6 +40,10 @@ public class ClientController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Profile");
+
+            ProfileController controller = loader.getController();
+            controller.setUserId(userId);
+
             stage.show();
             Stage currentStage = (Stage) profileButton.getScene().getWindow();
             currentStage.close();
@@ -48,6 +58,10 @@ public class ClientController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Send Package");
+
+            SendPackageController controller = loader.getController();
+            controller.initializeSenderId(userId);
+
             stage.show();
             Stage currentStage = (Stage) sendPackageButton.getScene().getWindow();
             currentStage.close();
@@ -62,6 +76,7 @@ public class ClientController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Track Package");
+
             stage.show();
             Stage currentStage = (Stage) trackPackageButton.getScene().getWindow();
             currentStage.close();

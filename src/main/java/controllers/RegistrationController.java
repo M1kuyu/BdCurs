@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import utils.DBUtil;
 import utils.HashUtil;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,10 +81,24 @@ public class RegistrationController {
 
                     statement.executeUpdate();
                     System.out.println("Registration successful");
+
+                    // Загрузка и отображение окна login_view.fxml
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/login_view.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.setTitle("Login");
+                    stage.show();
+
+                    // Закрытие текущего окна регистрации
+                    Stage currentStage = (Stage) registerButton.getScene().getWindow();
+                    currentStage.close();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

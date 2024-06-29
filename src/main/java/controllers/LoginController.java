@@ -92,6 +92,10 @@ public class LoginController {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.setTitle("Client");
+
+            ClientController clientController = loader.getController();
+            clientController.setUserId(userId);
+
             stage.show();
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();

@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -38,17 +39,16 @@ public class SendPackageController {
 
     private int senderId;
 
-    @FXML
-    public void initialize() {
-        sendPackageButton.setOnAction(event -> sendPackage());
-        backButton.setOnAction(event -> goBack());
-
+    public void initializeSenderId(int senderId) {
+        this.senderId = senderId;
         loadDeliveryCenters();
         loadPackageTypes();
     }
 
-    public void setSenderId(int senderId) {
-        this.senderId = senderId;
+    @FXML
+    public void initialize() {
+        sendPackageButton.setOnAction(event -> sendPackage());
+        backButton.setOnAction(event -> goBack());
     }
 
     private void loadDeliveryCenters() {
@@ -79,17 +79,28 @@ public class SendPackageController {
         float weight = Float.parseFloat(weightField.getText());
 
         try (Connection connection = DBUtil.getConnection()) {
-            // Получаем ID центра доставки по имени
-            String query = "SELECT center_id FROM DeliveryCenters WHERE name = ?";
+            // Проверяем, существует ли sender_id в таблице Clients
+            String query = "SELECT client_id FROM Clients WHERE client_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, selectedCenter);
+            statement.setInt(1, senderId);
 
             ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                System.out.println("Invalid sender ID");
+                return;
+            }
+
+            // Получаем ID центра доставки по имени
+            query = "SELECT center_id FROM DeliveryCenters WHERE name = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, selectedCenter);
+
+            resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 int deliveryCenterId = resultSet.getInt("center_id");
 
                 query = "INSERT INTO Packages (weight, type, sender_id, receiver_id, delivery_center_id, sender_center_id) VALUES (?, ?, ?, ?, ?, ?)";
-                statement = connection.prepareStatement(query);
+                statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                 statement.setFloat(1, weight);
                 statement.setString(2, packageType);
                 statement.setInt(3, senderId);
@@ -97,12 +108,27 @@ public class SendPackageController {
                 statement.setInt(5, deliveryCenterId);
                 statement.setInt(6, deliveryCenterId);
 
-                statement.executeUpdate();
-                System.out.println("Package sent successfully");
+                int affectedRows = statement.executeUpdate();
+                if (affectedRows > 0) {
+                    ResultSet generatedKeys = statement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int packageId = generatedKeys.getInt(1);
+                        System.out.println("Package sent successfully");
+                        showPackageId(packageId);
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showPackageId(int packageId) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Package Sent");
+        alert.setHeaderText("Package sent successfully!");
+        alert.setContentText("Your Package ID is: " + packageId);
+        alert.showAndWait();
     }
 
     private void goBack() {
